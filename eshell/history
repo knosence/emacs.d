@@ -1,0 +1,7 @@
+cd .emacs.d/
+ls
+open init.el 
+init.el
+dired
+emacs init.el 
+exit
