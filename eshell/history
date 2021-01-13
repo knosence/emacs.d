@@ -5,3 +5,7 @@ init.el
 dired
 emacs init.el 
 exit
+git remote add origin https://github.com/knosence/emacs.d.git
+git branch -M main
+git push -u origin main
+git push -u origin main

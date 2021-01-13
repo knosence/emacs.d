@@ -1,3 +1,5 @@
+;;davbiwil/emacs-from-scratch
+
 
 (setq inhibit-startup-message t)
 
@@ -17,6 +19,18 @@
 		    :height 180
 		    :weight 'normal
 		    :width  'normal)
+
+;; Set the fixed pich face
+(set-face-attribute 'fixed-pitch nil
+		    :font "mononoki Nerd Font Mono"
+		    :height 180)
+		    
+;; Set the variable pitch font
+(set-face-attribute 'variable-pitch nil
+		    :font "Cantarell"
+		    :height 190
+		    :weight 'regular)
+
 
 ;; Make ESC quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -179,23 +193,64 @@
     (setq projectile-project-search-path '("~/GitRepos")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package councel-projectile
+(use-package counsel-projectile
   :config (counsel-projectile-mode))
 
 (use-package magit
-  :custom (magit-display-buffer-fuction #'magit-display-buffer-same-window-except-diff-v1))
+  :commands (magit-status magit-get-current-branch)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package evil-magit
   :after magit)
 
+(use-package forge)
 
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (setq evil-auto-indent nil))
 
+(use-package org
+    :config
+    (setq org-ellipsis " ▾")
+    
+(use-package org-superstar
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 
+;; Replace list hyphen with dot
+(font-lock-add-keywords 'org-mode
+			'(("^ *\\([-]\\) "
+			   ( 0 ( prog1 () (compose-region (match-beginning 1) (match-end 1) "●"))))))
 
+(dolist (face '((org-level-1 . 1.2)
+		(org-level-2 . 1.1)
+		(org-level-3 . 1.05)
+		(org-level-4 . 1.0)
+		(org-level-5 . 1.1)
+		(org-level-6 . 1.1)
+		(org-level-7 . 1.1)
+		(org-level-8 . 1.1)))
+  (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
 
+;; Endsure that anything that should be fixed-pitch in Org files appears that way
+(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-piched)
+(set-face-attribute 'org-code nil  :inherit '(shadow fixed-piched))
+(set-face-attribute 'org-indent nil  :inherit '(shadow fixed-piched))
+(set-face-attribute 'org-table nil  :inherit '(shadow fixed-piched))
+;;(set-face-attribute 'org-indent nil  :inherit '(org-hide fixed-piched))
+(set-face-attribute 'org-verbatim nil  :inherit '(shadow fixed-piched))
+(set-face-attribute 'org-special-keyword nil  :inherit '(font-lock-comment-face fixed-piched))
+(set-face-attribute 'org-meta-line nil  :inherit '(font-lock-comment-face fixed-piched))
+(set-face-attribute 'org-checkbox nil  :inherit '(fixed-piched))
 
-
-
+(require 'org-indent)
 
 
 
@@ -211,7 +266,7 @@
  '(custom-safe-themes
    '("5b809c3eae60da2af8a8cfba4e9e04b4d608cb49584cb5998f6e4a1c87c057c4" "71e5acf6053215f553036482f3340a5445aee364fb2e292c70d9175fb0cc8af7" default))
  '(package-selected-packages
-   '(evil-magit magit councel-projectile projectile hydra evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters doom-modeline ivy use-package)))
+   '(forge evil-magit magit councel-projectile projectile hydra evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters doom-modeline ivy use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -1,3 +1,5 @@
+;;davbiwil/emacs-from-scratch
+
 
 (setq inhibit-startup-message t)
 
@@ -188,9 +190,19 @@
 (use-package evil-magit
   :after magit)
 
+(use-package forge)
 
+(defun efs/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (visual-line-mode 1)
+  (setq evil-auto-mode 1))
 
-
+  (use-package org
+    :config
+    (setq org-ellipsis " ▾")
+    
 
 
 
@@ -211,7 +223,7 @@
  '(custom-safe-themes
    '("5b809c3eae60da2af8a8cfba4e9e04b4d608cb49584cb5998f6e4a1c87c057c4" "71e5acf6053215f553036482f3340a5445aee364fb2e292c70d9175fb0cc8af7" default))
  '(package-selected-packages
-   '(magit councel-projectile projectile hydra evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters doom-modeline ivy use-package)))
+   '(forge evil-magit magit councel-projectile projectile hydra evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters doom-modeline ivy use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
